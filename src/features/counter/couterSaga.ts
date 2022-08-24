@@ -1,10 +1,10 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { delay, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import { call, delay, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { incrementSaga, incrementSagaSuccess } from './counterSlice';
 
 function* handleIncrementSaga(action: PayloadAction<number>) {
   console.log('Waiting 2s');
-  yield delay(2000)
+  yield call(delay, 1000)
   console.log('Dispatch action');
   yield put(incrementSagaSuccess(action.payload))
 }
