@@ -18,9 +18,9 @@ GET {{baseUrl}}/students?gender=male
 ### Sort student by mark
 GET {{baseUrl}}/students?_sort=mark&_order=desc
 
+
 ### Get student by like name
 GET {{baseUrl}}/students?name_like=eulalia
-
 
 
 ### Add new student
@@ -49,4 +49,4 @@ Content-Type: application/json
 
 ### # @name removeStudent
 
-DELETE {{baseUrl}}/students/C2lIHOg
+DELETE {{baseUrl}}/students/OrEiRzh
