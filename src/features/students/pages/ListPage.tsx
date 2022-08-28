@@ -1,12 +1,22 @@
 import { makeStyles } from '@material-ui/core';
-import { Box, Button, Typography } from '@mui/material';
+import { Pagination } from '@material-ui/lab';
+import { Box, Button, LinearProgress, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { useEffect } from 'react';
 import StudentTable from '../components/StudentTable';
-import { selectStudentList, studentActions } from '../studentSlice';
+import {
+  selectStudentFilter,
+  selectStudentList,
+  selectStudentLoading,
+  selectStudentPagination,
+  studentActions,
+} from '../studentSlice';
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    position: 'relative',
+    paddingTo:theme.spacing(1),
+  },
   titleContainer: {
     display: 'flex',
     flexFlow: 'row nowrap',
@@ -14,32 +24,54 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     marginBottom: theme.spacing(4),
   },
+  loading: {
+    position: 'absolute',
+    top: theme.spacing(-1),
+    width: '100%',
+  },
 }));
 export default function ListPage() {
   const studentList = useAppSelector(selectStudentList);
+  const pagination = useAppSelector(selectStudentPagination);
+  const filter = useAppSelector(selectStudentFilter);
+  const loading = useAppSelector(selectStudentLoading);
+
   const dispatch = useAppDispatch();
   const classes = useStyles();
-  console.log(studentList);
+
   useEffect(() => {
+    dispatch(studentActions.fetchStudentList(filter));
+  }, [dispatch, filter]);
+
+  const handlePageChange = (e: any, page: number) => {
     dispatch(
-      studentActions.fetchStudentList({
-        _page: 1,
-        _limit: 15,
+      studentActions.setFilter({
+        ...filter,
+        _page: page,
       })
     );
-  }, [dispatch]);
+  };
   return (
     <Box className={classes.root}>
+      {loading && <LinearProgress className={classes.loading} />}
+
       <Box className={classes.titleContainer}>
         <Typography variant="h4">Students</Typography>
         <Button variant="contained" color="primary">
           Add new student
         </Button>
       </Box>
-
       {/* student table */}
       <StudentTable studentList={studentList} />
       {/* pagination */}
+      <Box mt={2} display="flex" justifyContent="center">
+        <Pagination
+          color="primary"
+          count={Math.ceil(pagination._totalRows / pagination._limit)}
+          page={pagination?._page}
+          onChange={handlePageChange}
+        />
+      </Box>
     </Box>
   );
 }

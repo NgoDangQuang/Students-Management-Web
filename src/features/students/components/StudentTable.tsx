@@ -38,14 +38,14 @@ export default function StudentTable({ studentList, onEdit, onRemove }: StudentT
               <TableCell align="right">
                 <Button
                   sx={{ marginRight: '8px' }}
-                  variant="contained"
+                  size="small"
                   color="primary"
                   onClick={() => onEdit?.(student)}
                 >
                   Edit
                 </Button>
 
-                <Button variant="outlined" color="secondary" onClick={() => onRemove?.(student)}>
+                <Button size="small" color="secondary" onClick={() => onRemove?.(student)}>
                   Remove
                 </Button>
               </TableCell>
