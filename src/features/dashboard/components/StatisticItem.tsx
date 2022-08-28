@@ -26,7 +26,7 @@ export default function StatisticItem({ icon, label, value }: StatisticItemProps
         <Box>{icon}</Box>
         <Box>
           <Typography variant="h5" align='right'>{value}</Typography>
-          <Typography variant="caption">{label}</Typography>
+          <Typography variant="subtitle1">{label}</Typography>
         </Box>
       </Paper>
     </div>
