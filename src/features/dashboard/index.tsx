@@ -1,9 +1,14 @@
 import { makeStyles } from '@material-ui/core';
-import { PeopleAlt } from '@mui/icons-material';
-import { Box, Grid, LinearProgress } from '@mui/material';
+import BookmarkAddedTwoToneIcon from '@mui/icons-material/BookmarkAddedTwoTone';
+import BookmarkAddTwoToneIcon from '@mui/icons-material/BookmarkAddTwoTone';
+import FemaleTwoToneIcon from '@mui/icons-material/FemaleTwoTone';
+import MaleTwoToneIcon from '@mui/icons-material/MaleTwoTone';
+import { Box, Grid, LinearProgress, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import * as React from 'react';
 import StatisticItem from './components/StatisticItem';
+import StudentRankingList from './components/StudentRankingList';
+import Widget from './components/Widget';
 import {
   dashboardActions,
   selectDashboardLoading,
@@ -39,12 +44,14 @@ export default function Dashboard() {
 
   return (
     <Box className={classes.root}>
+      {/* Loading */}
       {loading && <LinearProgress className={classes.loading} />}
 
+      {/* Statistic Section */}
       <Grid container spacing={3}>
         <Grid item xs={12} md={6} lg={3}>
           <StatisticItem
-            icon={<PeopleAlt fontSize="large" color="primary" />}
+            icon={<MaleTwoToneIcon fontSize="large" color="primary" />}
             label="male"
             value={statistics.maleCount}
           />
@@ -52,7 +59,7 @@ export default function Dashboard() {
 
         <Grid item xs={12} md={6} lg={3}>
           <StatisticItem
-            icon={<PeopleAlt fontSize="large" color="primary" />}
+            icon={<FemaleTwoToneIcon fontSize="large" color="primary" />}
             label="female"
             value={statistics.femaleCount}
           />
@@ -60,7 +67,7 @@ export default function Dashboard() {
 
         <Grid item xs={12} md={6} lg={3}>
           <StatisticItem
-            icon={<PeopleAlt fontSize="large" color="primary" />}
+            icon={<BookmarkAddedTwoToneIcon fontSize="large" color="primary" />}
             label="mark >= 8"
             value={statistics.highMarkCount}
           />
@@ -68,12 +75,49 @@ export default function Dashboard() {
 
         <Grid item xs={12} md={6} lg={3}>
           <StatisticItem
-            icon={<PeopleAlt fontSize="large" color="primary" />}
+            icon={<BookmarkAddTwoToneIcon fontSize="large" color="primary" />}
             label="mark <= 5"
             value={statistics.lowMarkCount}
           />
         </Grid>
       </Grid>
+
+      {/* All student ranking */}
+      <Box mt={3}>
+        <Typography variant="h4">All Students</Typography>
+
+        <Box mt={2}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6} lg={3}>
+              <Widget title="Student with highest mark">
+                <StudentRankingList studentList={highestStudentList} />
+              </Widget>
+            </Grid>
+
+            <Grid item xs={12} md={6} lg={3}>
+              <Widget title="Student with lowest mark">
+                <StudentRankingList studentList={lowestStudentList} />
+              </Widget>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+      {/* Ranking by city */}
+      <Box mt={3}>
+        <Typography variant="h4">Ranking By City</Typography>
+
+        <Box mt={2}>
+          <Grid container spacing={3}>
+            {rankingByCityList.map((item) => (
+              <Grid key={item.cityId} item xs={12} md={6} lg={3}>
+                <Widget title={item.cityName}>
+                  <StudentRankingList studentList={item.rankingList} />
+                </Widget>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      </Box>
     </Box>
   );
 }
