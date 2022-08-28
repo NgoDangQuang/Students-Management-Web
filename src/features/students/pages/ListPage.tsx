@@ -2,8 +2,10 @@ import { makeStyles } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import { Box, Button, LinearProgress, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { selectCityMap } from 'features/city/citySlice';
+import { selectCityList, selectCityMap } from 'features/city/citySlice';
+import { ListParams } from 'models';
 import { useEffect } from 'react';
+import StudentFilter from '../components/StudentFilter';
 import StudentTable from '../components/StudentTable';
 import {
   selectStudentFilter,
@@ -37,6 +39,7 @@ export default function ListPage() {
   const filter = useAppSelector(selectStudentFilter);
   const loading = useAppSelector(selectStudentLoading);
   const cityMap = useAppSelector(selectCityMap);
+  const cityList = useAppSelector(selectCityList);
 
   const dispatch = useAppDispatch();
   const classes = useStyles();
@@ -53,6 +56,10 @@ export default function ListPage() {
       })
     );
   };
+
+  const handleSearchChange = (newFilter:ListParams)=>{
+    dispatch(studentActions.setFilterWithDebounce(newFilter))
+  }
   return (
     <Box className={classes.root}>
       {loading && <LinearProgress className={classes.loading} />}
@@ -63,8 +70,14 @@ export default function ListPage() {
           Add new student
         </Button>
       </Box>
+
+      <Box mb={3}>
+        <StudentFilter filter={filter} cityList={cityList} onSearchChange={handleSearchChange} />
+      </Box>
+
       {/* student table */}
       <StudentTable studentList={studentList} cityMap={cityMap} />
+
       {/* pagination */}
       <Box mt={2} display="flex" justifyContent="center">
         <Pagination
