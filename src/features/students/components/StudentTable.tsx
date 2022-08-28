@@ -33,7 +33,7 @@ export default function StudentTable({
             <TableCell>Gender</TableCell>
             <TableCell>Mark</TableCell>
             <TableCell>City</TableCell>
-            <TableCell align="right">Actions</TableCell>
+            <TableCell align="right">Actionss</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
