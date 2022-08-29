@@ -3,10 +3,11 @@ import { Box, Typography } from '@mui/material';
 import studentApi from 'api/studentApi';
 import { Student } from 'models';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import StudentForm from '../components/StudentForm';
 
 export default function AddEditPage() {
+  const history = useHistory();
   const { studentId } = useParams<{ studentId: string }>();
   const isEdit = Boolean(studentId);
   const [student, setStudent] = useState<Student>();
@@ -25,7 +26,14 @@ export default function AddEditPage() {
     })();
   }, [studentId]);
 
-  const handleFormSubmit = (formValues: Student) => {};
+  const handleFormSubmit = async (formValues: Student) => {
+    if (isEdit) {
+      await studentApi.update(formValues);
+    } else {
+      await studentApi.add(formValues);
+    }
+    history.push('/admin/students');
+  };
   const initialValues: Student = {
     name: '',
     age: '',
