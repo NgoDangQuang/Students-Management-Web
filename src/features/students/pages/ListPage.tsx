@@ -7,6 +7,7 @@ import { selectCityList, selectCityMap } from 'features/city/citySlice';
 import { ListParams, Student } from 'models';
 import { useEffect } from 'react';
 import { Link, useHistory, useRouteMatch } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import StudentFilter from '../components/StudentFilter';
 import StudentTable from '../components/StudentTable';
 import {
@@ -75,6 +76,16 @@ export default function ListPage() {
       // Remove student API
       await studentApi.remove(student?.id || '');
 
+      toast('🦄 Remove student successfully!', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
       // Trigger to re-fetch student list with current filter
       const newFilter = { ...filter };
       dispatch(studentActions.setFilter(newFilter));
@@ -83,8 +94,8 @@ export default function ListPage() {
     }
   };
 
-  const handleEditStudent = async (student:Student) => {
-    history.push(`${match.url}/${student.id}`)
+  const handleEditStudent = async (student: Student) => {
+    history.push(`${match.url}/${student.id}`);
   };
   return (
     <Box className={classes.root}>
@@ -110,7 +121,12 @@ export default function ListPage() {
       </Box>
 
       {/* student table */}
-      <StudentTable studentList={studentList} cityMap={cityMap} onRemove={handleRemoveStudent} onEdit={handleEditStudent}/>
+      <StudentTable
+        studentList={studentList}
+        cityMap={cityMap}
+        onRemove={handleRemoveStudent}
+        onEdit={handleEditStudent}
+      />
 
       {/* pagination */}
       <Box mt={2} display="flex" justifyContent="center">

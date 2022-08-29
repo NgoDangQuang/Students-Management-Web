@@ -4,6 +4,7 @@ import studentApi from 'api/studentApi';
 import { Student } from 'models';
 import { useEffect, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import StudentForm from '../components/StudentForm';
 
 export default function AddEditPage() {
@@ -26,12 +27,25 @@ export default function AddEditPage() {
     })();
   }, [studentId]);
 
-  const handleFormSubmit = async (formValues: Student) => {
+  const handleStudentFormSubmit = async (formValues: Student) => {
     if (isEdit) {
       await studentApi.update(formValues);
     } else {
       await studentApi.add(formValues);
     }
+
+    // toast message
+    toast('🦄 Save student successfully!', {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+
+    // Redirect back to student list
     history.push('/admin/students');
   };
   const initialValues: Student = {
@@ -55,7 +69,7 @@ export default function AddEditPage() {
 
       {(!isEdit || Boolean(student)) && (
         <Box mt={3}>
-          <StudentForm initialValues={initialValues} onSubmit={handleFormSubmit} />
+          <StudentForm initialValues={initialValues} onSubmit={handleStudentFormSubmit} />
         </Box>
       )}
     </Box>
