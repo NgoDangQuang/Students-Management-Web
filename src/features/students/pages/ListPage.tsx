@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { selectCityList, selectCityMap } from 'features/city/citySlice';
 import { ListParams, Student } from 'models';
 import { useEffect } from 'react';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import StudentFilter from '../components/StudentFilter';
 import StudentTable from '../components/StudentTable';
 import {
@@ -35,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 export default function ListPage() {
+  const match = useRouteMatch();
+  const history = useHistory();
+
   const studentList = useAppSelector(selectStudentList);
   const pagination = useAppSelector(selectStudentPagination);
   const filter = useAppSelector(selectStudentFilter);
@@ -78,15 +82,22 @@ export default function ListPage() {
       console.log('Failed to fetch student', error);
     }
   };
+
+  const handleEditStudent = async (student:Student) => {
+    history.push(`${match.url}/${student.id}`)
+  };
   return (
     <Box className={classes.root}>
       {loading && <LinearProgress className={classes.loading} />}
 
       <Box className={classes.titleContainer}>
         <Typography variant="h4">Students</Typography>
-        <Button variant="contained" color="primary">
-          Add new student
-        </Button>
+
+        <Link to={`${match.url}/add`} style={{ textDecoration: 'none' }}>
+          <Button variant="contained" color="primary">
+            Add new student
+          </Button>
+        </Link>
       </Box>
 
       <Box mb={3}>
@@ -99,7 +110,7 @@ export default function ListPage() {
       </Box>
 
       {/* student table */}
-      <StudentTable studentList={studentList} cityMap={cityMap} onRemove={handleRemoveStudent} />
+      <StudentTable studentList={studentList} cityMap={cityMap} onRemove={handleRemoveStudent} onEdit={handleEditStudent}/>
 
       {/* pagination */}
       <Box mt={2} display="flex" justifyContent="center">
