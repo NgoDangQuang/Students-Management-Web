@@ -1,9 +1,10 @@
 import { makeStyles } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import { Box, Button, LinearProgress, Typography } from '@mui/material';
+import studentApi from 'api/studentApi';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { selectCityList, selectCityMap } from 'features/city/citySlice';
-import { ListParams } from 'models';
+import { ListParams, Student } from 'models';
 import { useEffect } from 'react';
 import StudentFilter from '../components/StudentFilter';
 import StudentTable from '../components/StudentTable';
@@ -64,6 +65,19 @@ export default function ListPage() {
   const handleFilterChange = (newFilter: ListParams) => {
     dispatch(studentActions.setFilter(newFilter));
   };
+
+  const handleRemoveStudent = async (student: Student) => {
+    try {
+      // Remove student API
+      await studentApi.remove(student?.id || '');
+
+      // Trigger to re-fetch student list with current filter
+      const newFilter = { ...filter };
+      dispatch(studentActions.setFilter(newFilter));
+    } catch (error) {
+      console.log('Failed to fetch student', error);
+    }
+  };
   return (
     <Box className={classes.root}>
       {loading && <LinearProgress className={classes.loading} />}
@@ -85,7 +99,7 @@ export default function ListPage() {
       </Box>
 
       {/* student table */}
-      <StudentTable studentList={studentList} cityMap={cityMap} />
+      <StudentTable studentList={studentList} cityMap={cityMap} onRemove={handleRemoveStudent} />
 
       {/* pagination */}
       <Box mt={2} display="flex" justifyContent="center">

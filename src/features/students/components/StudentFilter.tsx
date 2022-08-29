@@ -51,7 +51,6 @@ export default function StudentFilter({
   const handleSortChange = (e: SelectChangeEvent) => {
     if (!onChange) return;
 
-    console.log(e);
     const value = e.target.value;
     const [_sort, _order] = (value as string).split('.');
     const newFilter: ListParams = {
