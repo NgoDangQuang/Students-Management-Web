@@ -1,4 +1,5 @@
-import { NotFound, PrivateRoute } from 'components/Common';
+import { PrivateRoute } from 'components/Common';
+import { DefaultRoute } from 'components/Common/DefaultRoute';
 import { AdminLayout } from 'components/Layout';
 import LoginPage from 'features/auth/pages/LoginPage';
 import { Route, Switch } from 'react-router-dom';
@@ -16,7 +17,7 @@ function App() {
         </PrivateRoute>
 
         <Route>
-          <NotFound />
+          <DefaultRoute />
         </Route>
       </Switch>
     </>
