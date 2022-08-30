@@ -1,4 +1,4 @@
-@baseUrl = http://js-post-api.herokuapp.com/api
+@baseUrl = https://js-post-api.herokuapp.com/api
 
 #Students
 
