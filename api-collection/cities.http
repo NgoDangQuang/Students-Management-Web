@@ -1,4 +1,4 @@
-@baseUrl = https://js-post-api.herokuapp.com/api
+@baseUrl = http://js-post-api.herokuapp.com/api
 
 #cities
 
